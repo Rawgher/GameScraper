@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/styles/materialize.css" media="screen,projection" />
+
+    <!-- reset CSS-->
+    <link rel="stylesheet" href="/assets/css/reset.css" media="screen" title="no title" charset="utf-8">
+
+    {{!-- Tachyons CSS --}}
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css" />
+
+    <!-- Local CSS-->
+    <link rel="stylesheet" href="/assets/css/style.css" media="screen" title="no title" charset="utf-8">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+
+    <title>GameScrape | {{title}}</title>
+</head>
+
+<body>
+    <header>
+        {{> navbar}}
+    </header>
+
+    <main>
+        {{{body}}}
+    </main>
+
+    <footer>
+        {{> footer}}
+    </footer>
+
+    <!--JavaScript at end of body for optimized loading-->
+
+    {{!-- Import jQuery --}}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+    <script src="assets/js/index.js"></script>
+
+</body>
+
+</html>
