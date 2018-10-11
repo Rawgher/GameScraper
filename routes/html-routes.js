@@ -1,5 +1,7 @@
-
+var axios = require("axios");
+var cheerio = require("cheerio");
 const db = require("../models");
+
 module.exports = function (app) {
 
     app.get("/", function (req, res) {
@@ -8,32 +10,63 @@ module.exports = function (app) {
         });
     });
 
-    app.get("/saved", function (req, res) {
-        db.News.find({}).then(function (dbNews) {
-            res.render("saved", {
-                title: "Saved Articles",
-                news: dbNews
-            }).catch(function (err) {
-                res.json(err);
-            })
+    // A GET route for scraping the echoJS website
+    app.get("/scrape", function (req, res) {
+
+        // First, we grab the body of the html with axios
+        axios.get("http://www.theverge.com/games").then(function (response) {
+
+            // Then, we load that into cheerio and save it to $ for a shorthand selector
+            var $ = cheerio.load(response.data);
+
+            // Now, we grab every h2 within an article tag, and do the following:
+            $(".c-entry-box--compact--article").each(function (i, element) {
+                console.log("am i running?")
+                // Save an empty result object
+                var result = {};
+
+                // Add the text and href of every link, and save them as properties of the result object
+                result.title = $(this)
+                    .children("div").children("h2").children("a")
+                    .text();
+                result.link = $(this)
+                    .children("div").children("h2").children("a")
+                    .attr("href");
+
+                result.image = $(this)
+                .children("a").children("div").children("img").attr("src");
+
+                // Create a new Article using the `result` object built from scraping
+                db.News.create(result)
+                    .then(function (dbNews) {
+                        // View the added result in the console
+                        console.log(dbNews);
+                    })
+                    .catch(function (err) {
+                        // If an error occurred, send it to the client
+                        return res.json(err);
+                    });
+            });
+
+            // If we were able to successfully scrape and save an Article, send a message to the client
+            res.redirect("/");
         });
     });
 
 
-
-    //   // Route for getting all Articles from the db
-    //   app.get("/articles", function(req, res) {
-    //     // Grab every document in the Articles collection
-    //     db.Article.find({})
-    //       .then(function(dbArticle) {
-    //         // If we were able to successfully find Articles, send them back to the client
-    //         res.json(dbArticle);
-    //       })
-    //       .catch(function(err) {
-    //         // If an error occurred, send it to the client
-    //         res.json(err);
-    //       });
-    //   });
+      // Route for getting all Articles from the db
+      app.get("/articles", function(req, res) {
+        // Grab every document in the Articles collection
+        db.News.find({}).sort({_id: -1})
+          .then(function(dbNews) {
+            // If we were able to successfully find Articles, send them back to the client
+            res.json(dbNews);
+          })
+          .catch(function(err) {
+            // If an error occurred, send it to the client
+            res.json(err);
+          });
+      });
 
     //   // Route for grabbing a specific Article by id, populate it with it's note
     //   app.get("/articles/:id", function(req, res) {
@@ -70,4 +103,15 @@ module.exports = function (app) {
     //         res.json(err);
     //       });
     //   });
+
+    // app.get("/saved", function (req, res) {
+    //     db.News.find({}).then(function (dbNews) {
+    //         res.render("saved", {
+    //             title: "Saved Articles",
+    //             news: dbNews
+    //         }).catch(function (err) {
+    //             res.json(err);
+    //         })
+    //     });
+    // });
 };

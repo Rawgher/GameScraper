@@ -22,24 +22,24 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+// Handlebars
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main"
+  })
+);
+app.set("view engine", "handlebars");
+
 // Connect to the Mongo DB
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/gamescraper";
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
-// Handlebars
-app.engine(
-    "handlebars",
-    exphbs({
-      defaultLayout: "main"
-    })
-  );
-  app.set("view engine", "handlebars");
-
 // Routes
 require("./routes/html-routes")(app)
 // require("./routes/saved-routes")(app)
-require("./routes/scrape-routes")(app)
+// require("./routes/scrape-routes")(app)
 
 
 // Start the server
