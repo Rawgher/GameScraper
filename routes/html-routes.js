@@ -5,8 +5,11 @@ const db = require("../models");
 module.exports = function (app) {
 
     app.get("/", function (req, res) {
-        res.render("index", {
-            title: "Home"
+        db.News.find({}).sort({ _id: -1 }).then(function (dbNews) {
+            res.render("index", {
+                title: "Home",
+                news: dbNews
+            });
         });
     });
 
@@ -29,12 +32,16 @@ module.exports = function (app) {
                 result.title = $(this)
                     .children("div").children("h2").children("a")
                     .text();
+                
                 result.link = $(this)
                     .children("div").children("h2").children("a")
                     .attr("href");
 
                 result.image = $(this)
-                .children("a").children("div").children("img").attr("src");
+                    .children("a").children("div").children("img").attr("src");
+
+                result.author = $(this)
+                    .children("div").children("div").children("span").children("a").text();
 
                 // Create a new Article using the `result` object built from scraping
                 db.News.create(result)
@@ -54,19 +61,19 @@ module.exports = function (app) {
     });
 
 
-      // Route for getting all Articles from the db
-      app.get("/articles", function(req, res) {
+    // Route for getting all Articles from the db
+    app.get("/articles", function (req, res) {
         // Grab every document in the Articles collection
-        db.News.find({}).sort({_id: -1})
-          .then(function(dbNews) {
-            // If we were able to successfully find Articles, send them back to the client
-            res.json(dbNews);
-          })
-          .catch(function(err) {
-            // If an error occurred, send it to the client
-            res.json(err);
-          });
-      });
+        db.News.find({}).sort({ _id: -1 })
+            .then(function (dbNews) {
+                // If we were able to successfully find Articles, send them back to the client
+                res.json(dbNews);
+            })
+            .catch(function (err) {
+                // If an error occurred, send it to the client
+                res.json(err);
+            });
+    });
 
     //   // Route for grabbing a specific Article by id, populate it with it's note
     //   app.get("/articles/:id", function(req, res) {
