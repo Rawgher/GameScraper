@@ -28,25 +28,34 @@ module.exports = function (app) {
                 var result = {};
 
                 // Add the text and href of every link, and save them as properties of the result object
-                result.title = $(this)
-                    .children("div").children("h2").children("a")
-                    .text();
-                
-                result.link = $(this)
-                    .children("div").children("h2").children("a")
-                    .attr("href");
+                result.title = $(this).children("div").children("h2").children("a").text();
+
+                result.link = $(this).children("div").children("h2").children("a").attr("href");
 
                 var myRegex = new RegExp('src="(.+)">', 'g');
                 var noscript_string = $(this).children("a").children("div").children("noscript").text();
-                
+
                 result.image = myRegex.exec(noscript_string);
-                
 
                 if (result.image != null && result.image.length > 0) { result.image = result.image[1] }
                 else result.image = ""
 
                 result.author = $(this)
                     .children("div").children("div").children("span").children("a").text();
+
+                // THIS STUFF IS STARTING TO ALMOST MAYBE WORK?
+                // axios.get("'" + response.link + "'").then(function (response2) {
+                //     // Then, we load that into cheerio and save it to $ for a shorthand selector
+                //     var $ = cheerio.load(response2.data);
+
+                //     // Now, we grab every h2 within an article tag, and do the following:
+                //     $("head").each(function (i, element) {
+                //         result.description = $(this).attr("description");
+                //         console.log(result.description)
+
+                //     })
+                // })
+
 
                 // Create a new Article using the `result` object built from scraping
                 db.News.create(result)
@@ -58,6 +67,8 @@ module.exports = function (app) {
                         // If an error occurred, send it to the client
                         return res.json(err);
                     });
+
+
             });
 
             // If we were able to successfully scrape and save an Article, send a message to the client
