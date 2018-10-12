@@ -1,6 +1,8 @@
 var axios = require("axios");
 var cheerio = require("cheerio");
 const db = require("../models");
+// const request = require("request");
+const extract = require('meta-extractor');
 
 module.exports = function (app) {
 
@@ -40,21 +42,20 @@ module.exports = function (app) {
                 if (result.image != null && result.image.length > 0) { result.image = result.image[1] }
                 else result.image = ""
 
-                result.author = $(this)
-                    .children("div").children("div").children("span").children("a").text();
+                // result.author = $(this)
+                //     .children("div").children("div").children("span").children("a").text();
 
-                // THIS STUFF IS STARTING TO ALMOST MAYBE WORK?
-                // axios.get("'" + response.link + "'").then(function (response2) {
-                //     // Then, we load that into cheerio and save it to $ for a shorthand selector
-                //     var $ = cheerio.load(response2.data);
+                // extract({ uri: result.link })
+                //     .then(res => result.description = res.description)
 
-                //     // Now, we grab every h2 within an article tag, and do the following:
-                //     $("head").each(function (i, element) {
-                //         result.description = $(this).attr("description");
-                //         console.log(result.description)
+                extract({ uri: result.link }, (err, res) =>
+                    res.description = result.description)
+                    
+    
 
-                //     })
-                // })
+
+
+                // result.description
 
 
                 // Create a new Article using the `result` object built from scraping
@@ -67,7 +68,6 @@ module.exports = function (app) {
                         // If an error occurred, send it to the client
                         return res.json(err);
                     });
-
 
             });
 
@@ -137,4 +137,15 @@ module.exports = function (app) {
     //         })
     //     });
     // });
+
+    app.get("/clear", function (req, res) {
+        db.News.remove({}, function (err, res) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("removed all articles")
+            }
+        })
+        res.redirect("/");
+    })
 };
