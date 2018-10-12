@@ -21,10 +21,9 @@ module.exports = function (app) {
 
             // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(response.data);
-
             // Now, we grab every h2 within an article tag, and do the following:
             $(".c-entry-box--compact--article").each(function (i, element) {
-                console.log("am i running?")
+
                 // Save an empty result object
                 var result = {};
 
@@ -37,8 +36,14 @@ module.exports = function (app) {
                     .children("div").children("h2").children("a")
                     .attr("href");
 
-                result.image = $(this)
-                    .children("a").children("div").children("img").attr("src");
+                var myRegex = new RegExp('src="(.+)">', 'g');
+                var noscript_string = $(this).children("a").children("div").children("noscript").text();
+                
+                result.image = myRegex.exec(noscript_string);
+                
+
+                if (result.image != null && result.image.length > 0) { result.image = result.image[1] }
+                else result.image = ""
 
                 result.author = $(this)
                     .children("div").children("div").children("span").children("a").text();
