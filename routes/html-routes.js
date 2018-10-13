@@ -157,8 +157,9 @@ module.exports = function (app) {
         res.redirect("/saved")
     });
 
-    app.get("/read/:id/:noteid", function (req, res) {
-        db.Notes.deleteOne({ _id: req.params.noteid }, function (err, doc) {
+    app.delete("/read/:id/:noteid", function (req, res) {
+ 
+        db.Notes.findByIdAndRemove(req.params.noteid, function (err, doc) {
             if (err) { console.log(err)
             } else {
                 db.News.findOneAndUpdate({
@@ -167,14 +168,15 @@ module.exports = function (app) {
                     $pull: {
                         "notes": doc._id
                     }
-                }).exec(function (err, doc){
+                }
+            ).exec(function (err, doc){
                     if(err) {
                         console.log(err)
                     }
                 })
             }
         });
-        res.redirect("/read/" + req.params.id)
-    });
+        // res.redirect("/read/" + req.params.id)
+    })
 
 };

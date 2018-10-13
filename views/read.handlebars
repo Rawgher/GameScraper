@@ -29,7 +29,7 @@
         <p>Comment: {{this.body}}</p>
         </div>
         <div class="fl w-25 marginButton">
-            <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/read/:id/{{this._id}}">Delete Note</a>
+            <button class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" id="deleteNote" data-notes="{{this._id}}">Delete Note</button>
         </div>
         </div>
         {{/each}}
