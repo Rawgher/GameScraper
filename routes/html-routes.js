@@ -51,8 +51,10 @@ module.exports = function (app) {
                         // If we were able to successfully scrape and save an Article, send a message to the client
     
                         result.description = $(this).attr("content")
-    
-                        db.News.create(result)
+
+
+                                
+                                db.News.create(result)
                             .then(function (dbNews) {
                                 // View the added result in the console
                                 console.log(dbNews);
@@ -62,6 +64,8 @@ module.exports = function (app) {
                                 // If an error occurred, send it to the client
                                 // return res.json(err);
                             });
+    
+                        
     
                         
                     })
@@ -144,6 +148,13 @@ module.exports = function (app) {
         });
     });
 
+    app.get("/saveIt/:id", function (req, res) {
+        db.News.updateOne({_id: req.params.id}, { $set: { saved: true }}, function(err) {
+
+        })
+        res.redirect("/")
+    })
+
     app.get("/clear", function (req, res) {
         db.News.remove({}, function (err, res) {
             if (err) {
@@ -154,4 +165,12 @@ module.exports = function (app) {
         })
         res.redirect("/");
     })
+
+    app.get("/delete/:id", function (req, res) {
+        db.News.deleteOne({ _id: req.params.id }, function (err) {
+            if (err) return handleError(err);
+          });
+    res.redirect("/saved")
+        });
+    
 };

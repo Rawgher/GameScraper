@@ -38,8 +38,6 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Routes
 require("./routes/html-routes")(app)
-// require("./routes/saved-routes")(app)
-// require("./routes/scrape-routes")(app)
 
 
 // Start the server
