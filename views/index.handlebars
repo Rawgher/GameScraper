@@ -22,11 +22,12 @@
   <section class="mw7 center avenir">
 
         {{#unless news}}
-                <div class="bt bb b--black-10 fl w-100">
+                <div class="bt bb b--black-10">
                     <p>Looks like you haven't scraped the web yet. Go hit the scrape button on the banner and see what comes up!</p>
                 </div>
         {{/unless}}
 
+{{#if news}}
   {{#each news}}
   {{#unless saved }}
   
@@ -51,4 +52,5 @@
 
 {{/unless}}
 {{/each}}
+{{/if}}
 </section>

@@ -1,8 +1,6 @@
 var axios = require("axios");
 var cheerio = require("cheerio");
 const db = require("../models");
-// const request = require("request");
-// const extract = require('meta-extractor');
 
 module.exports = function (app) {
 
