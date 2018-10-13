@@ -22,14 +22,16 @@
         {{#if news.notes}}
         {{#each news.notes}}
         <div class="bt bb b--black-10 fl w-100">
-        {{!-- <div class="fl w-75 margin"> --}}
-        <h5 class="marginTop">Name: {{this.name}}</h5>
-        <p class="marginBot">Comment: {{this.body}}</p>
+        <div class="fl w-75 margin">
+        <h5>Name: {{this.name}}</h5>
+        {{!-- <h5 class="marginTop">Name: {{this.name}}</h5> --}}
+        {{!-- <p class="marginBot">Comment: {{this.body}}</p> --}}
+        <p>Comment: {{this.body}}</p>
         </div>
-        {{!-- <div class="fl w-25 marginButton">
-            <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/deletenote/{{this._id}}">Delete Note</a>
-        </div> --}}
-        {{!-- </div> --}}
+        <div class="fl w-25 marginButton">
+            <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/read/:id/{{this._id}}">Delete Note</a>
+        </div>
+        </div>
         {{/each}}
         {{/if}}
 
