@@ -20,6 +20,13 @@
   </article>
 
   <section class="mw7 center avenir">
+
+        {{#unless news}}
+                <div class="bt bb b--black-10 fl w-100">
+                    <p>Looks like you haven't scraped the web yet. Go hit the scrape button on the banner and see what comes up!</p>
+                </div>
+        {{/unless}}
+
   {{#each news}}
   {{#unless saved }}
   

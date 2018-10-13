@@ -157,4 +157,24 @@ module.exports = function (app) {
         res.redirect("/saved")
     });
 
+    // app.get("/deletenote/:noteid", function (req, res) {
+    //     db.Notes.deleteOne({ _id: req.params.noteid }, function (err, doc) {
+    //         if (err) { console.log(err)
+    //         } else {
+    //             db.News.findOneAndUpdate({
+    //                 "_id": req.params.id
+    //             }, {
+    //                 $pull: {
+    //                     "notes": doc._id
+    //                 }
+    //             }).exec(function (err, doc){
+    //                 if(err) {
+    //                     console.log(err)
+    //                 }
+    //             })
+    //         }
+    //     });
+    //     res.redirect("/read/" + req.params.id)
+    // });
+
 };

@@ -9,21 +9,37 @@
 
     </div>
 
+<div class="f4 mb4 center measure lh-copy">
+<h2 class="f2 tc-1">Comments</h2>
+    <div class="f4">
+        
+        {{#unless news.notes}}
+                <div class="bt bb b--black-10 fl w-100">
+                    <p>Looks like there aren't any comments yet. Feel free to be the first to add one!</p>
+                </div>
+        {{/unless}}
 
-
-    <div class="f4 mb4 center measure lh-copy">
-        <h4>Comments</h4>
         {{#if news.notes}}
         {{#each news.notes}}
-        <p>{{this.body}}</p>
-        <p>{{this.name}}</p>
+        <div class="bt bb b--black-10 fl w-100">
+        {{!-- <div class="fl w-75 margin"> --}}
+        <h5 class="marginTop">Name: {{this.name}}</h5>
+        <p class="marginBot">Comment: {{this.body}}</p>
+        </div>
+        {{!-- <div class="fl w-25 marginButton">
+            <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/deletenote/{{this._id}}">Delete Note</a>
+        </div> --}}
+        {{!-- </div> --}}
         {{/each}}
         {{/if}}
+
     </div>
+</div>
+<br>
 
-    <div class="f4 mb4 center measure lh-copy">
-
-        <form class="pa4 black-80" method="post" action="/read/{{news._id}}">
+<div class="f4 mb4 center measure lh-copy">
+    <h2 class="f2 tc-1">Add a Comment</h2>
+        <form class="black-80" method="post" action="/read/{{news._id}}">
 
             <div>
                 <label for="body" class="f6 b db mb2">Comments</label>
@@ -32,12 +48,13 @@
             </div>
             <div class="measure">
                 <label for="name" class="f6 b db mb2">Name</label>
-                <input id="name" class="input-reset ba b--black-20 pa2 mb2 db w-100" name="name" type="text" aria-describedby="name-desc">
+                <input id="name" class="input-reset ba b--black-20 pa2 mb2 db w-100" name="name" type="text"
+                    aria-describedby="name-desc">
             </div>
             <button class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" type="submit">Submit</button>
         </form>
 
-    </div>
+</div>
 
 
 

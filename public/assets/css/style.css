@@ -6,9 +6,27 @@
 }
 
 .fixedFoot {
+    position: sticky;
     bottom: 0px;
     left: 0px;
     right: 0px
 }
 
+/* .margin {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.marginButton {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+} */
+
+.marginTop {
+    margin-top: 1rem;
+}
+
+.marginBot {
+    margin-bottom: 1rem;
+}
 
