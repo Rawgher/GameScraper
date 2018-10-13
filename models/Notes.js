@@ -6,10 +6,12 @@ var Schema = mongoose.Schema;
 // Using the Schema constructor, create a new NoteSchema object
 // This is similar to a Sequelize model
 var NotesSchema = new Schema({
-  // `title` is of type String
-  title: String,
   // `body` is of type String
   body: {
+    type: String,
+    required: true
+  },
+  name: {
     type: String,
     required: true
   }

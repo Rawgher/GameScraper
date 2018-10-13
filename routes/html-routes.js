@@ -46,40 +46,34 @@ module.exports = function (app) {
 
                     // Then, we load that into cheerio and save it to $ for a shorthand selector
                     var $ = cheerio.load(response.data);
-    
+
                     $("meta[name='description']").each(function (i, element) {
                         // If we were able to successfully scrape and save an Article, send a message to the client
-    
+
                         result.description = $(this).attr("content")
 
-
-                                
-                                db.News.create(result)
+                        db.News.create(result)
                             .then(function (dbNews) {
                                 // View the added result in the console
                                 console.log(dbNews);
-                                
+
                             })
                             .catch(function (err) {
                                 // If an error occurred, send it to the client
                                 // return res.json(err);
                             });
-    
-                        
-    
-                        
+
+
                     })
-                    
-                    
-    
-    
+
+
                 })
 
 
             })
 
 
-            setTimeout(function(){res.redirect("/")},5000);
+            setTimeout(function () { res.redirect("/") }, 5000);
 
         })
 
@@ -99,6 +93,15 @@ module.exports = function (app) {
                 // If an error occurred, send it to the client
                 res.json(err);
             });
+    });
+
+    app.get("/read/:id", function (req, res) {
+        db.News.find({ _id: req.params.id }).populate("notes").then(function (dbNews) {
+            res.render("read", {
+                title: dbNews.title,
+                news: dbNews
+            });
+        });
     });
 
     //   // Route for grabbing a specific Article by id, populate it with it's note
@@ -149,7 +152,7 @@ module.exports = function (app) {
     });
 
     app.get("/saveIt/:id", function (req, res) {
-        db.News.updateOne({_id: req.params.id}, { $set: { saved: true }}, function(err) {
+        db.News.updateOne({ _id: req.params.id }, { $set: { saved: true } }, function (err) {
 
         })
         res.redirect("/")
@@ -169,8 +172,8 @@ module.exports = function (app) {
     app.get("/delete/:id", function (req, res) {
         db.News.deleteOne({ _id: req.params.id }, function (err) {
             if (err) return handleError(err);
-          });
-    res.redirect("/saved")
         });
-    
+        res.redirect("/saved")
+    });
+
 };

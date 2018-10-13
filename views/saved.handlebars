@@ -1,26 +1,12 @@
 <article class="athelas">
-    <div class="vh-75 dt w-100 tc bg-dark-gray white cover" style="background:url(/assets/images/ps4.jpg) no-repeat center;">
+    <div class="vh-75 dt w-100 tc bg-dark-gray white cover" style="background:url(/assets/images/keyboard.jpg) no-repeat center;">
         <div class="dtc v-mid">
-            <h1 class="f1 f-headline-l fw1 i white-60">GameScraper</h1>
-            <blockquote class="ph0 mh0 measure f4 lh-copy center">
-                <p class="fw1 white-70">
-                    Where you can get the latest news on upcoming games.
-                </p>
-                <cite class="f6 ttu tracked fs-normal">Rawgher</cite>
-                <br>
-                <br>
-                <div>
-                    <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/scrape">Scrape Articles</a>
-                    <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/clear">Clear Articles</a>
-                </div>
-            </blockquote>
-
+            <h1 class="f1 f-headline-l fw1 i white-60">Saved Articles</h1>
         </div>
     </div>
 </article>
 
 <section class="mw7 center avenir">
-    <h2 class="baskerville fw1 ph3 ph0-l">Saved Articles</h2>
     {{#each news}}
     {{#if saved }}
     <article class="bt bb b--black-10">
@@ -36,8 +22,8 @@
           <h1 class="f3 fw1 baskerville mt0 lh-title">{{this.title}}</h1>
           </a>
           <p class="f6 lh-copy mv0">{{this.description}}</p>
-          <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" data-id="{{this._id}}" data-saved="{{this.saved}}">Article Notes</a>
-          <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/delete/{{this._id}}" data-saved="{{this.saved}}">Delete Article</a>
+          <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/read/{{this._id}}">Article Notes</a>
+          <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/delete/{{this._id}}">Delete Article</a>
         </div>
       </div>
   </article>

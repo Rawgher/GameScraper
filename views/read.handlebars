@@ -1,0 +1,44 @@
+<article class="baskerville pb5">
+    <header class="avenir tc-l ph3 ph4-ns pt4 pt5-ns">
+        {{#each news}}
+        <h1 class="f3 f2-m f-subheadline-l measure lh-title fw1 mt0">{{this.title}}</h1>
+        <img class="w-100 dib measure f3" src="{{this.image}}" />
+    </header>
+    <div class="ph3 ph4-m ph5-l">
+        <p class="f4 mb4 center measure lh-copy">
+            {{this.description}} <a href="{{this.link}}" class="center black">Link to full article</a></p>
+
+    </div>
+
+
+
+    {{/each}}
+    <div class="f4 mb4 center measure lh-copy">
+        <h4>Comments</h4>
+        {{#if news.notes}}
+        {{#each news.notes}}
+        <p>{{this.body}}</p>
+        <p>{{this.name}}</p>
+        {{/each}}
+        {{/if}}
+    </div>
+
+    <div class="f4 mb4 center measure lh-copy">
+        <form class="pa4 black-80">
+            <div>
+                <label for="comment" class="f6 b db mb2">Comments</label>
+                <textarea id="comment" name="comment" class="db border-box hover-black w-100 measure ba b--black-20 pa2 br2 mb2"
+                    aria-describedby="comment-desc"></textarea>
+            </div>
+            <div class="measure">
+                <label for="name" class="f6 b db mb2">Name</label>
+                <input id="name" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" aria-describedby="name-desc">
+            </div>
+            <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" action="submit">Submit</a>
+        </form>
+
+    </div>
+
+
+
+</article>
