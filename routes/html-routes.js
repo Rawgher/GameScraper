@@ -2,7 +2,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 const db = require("../models");
 // const request = require("request");
-const extract = require('meta-extractor');
+// const extract = require('meta-extractor');
 
 module.exports = function (app) {
 
@@ -42,39 +42,45 @@ module.exports = function (app) {
                 if (result.image != null && result.image.length > 0) { result.image = result.image[1] }
                 else result.image = ""
 
-                // result.author = $(this)
-                //     .children("div").children("div").children("span").children("a").text();
+                axios.get(result.link).then(function (response) {
 
-                // extract({ uri: result.link })
-                //     .then(res => result.description = res.description)
-
-                extract({ uri: result.link }, (err, res) =>
-                    res.description = result.description)
+                    // Then, we load that into cheerio and save it to $ for a shorthand selector
+                    var $ = cheerio.load(response.data);
+    
+                    $("meta[name='description']").each(function (i, element) {
+                        // If we were able to successfully scrape and save an Article, send a message to the client
+    
+                        result.description = $(this).attr("content")
+    
+                        db.News.create(result)
+                            .then(function (dbNews) {
+                                // View the added result in the console
+                                console.log(dbNews);
+                                
+                            })
+                            .catch(function (err) {
+                                // If an error occurred, send it to the client
+                                // return res.json(err);
+                            });
+    
+                        
+                    })
+                    
                     
     
+    
+                })
 
 
+            })
 
-                // result.description
+
+            setTimeout(function(){res.redirect("/")},5000);
+
+        })
 
 
-                // Create a new Article using the `result` object built from scraping
-                db.News.create(result)
-                    .then(function (dbNews) {
-                        // View the added result in the console
-                        console.log(dbNews);
-                    })
-                    .catch(function (err) {
-                        // If an error occurred, send it to the client
-                        return res.json(err);
-                    });
-
-            });
-
-            // If we were able to successfully scrape and save an Article, send a message to the client
-            res.redirect("/");
-        });
-    });
+    })
 
 
     // Route for getting all Articles from the db
@@ -127,16 +133,16 @@ module.exports = function (app) {
     //       });
     //   });
 
-    // app.get("/saved", function (req, res) {
-    //     db.News.find({}).then(function (dbNews) {
-    //         res.render("saved", {
-    //             title: "Saved Articles",
-    //             news: dbNews
-    //         }).catch(function (err) {
-    //             res.json(err);
-    //         })
-    //     });
-    // });
+    app.get("/saved", function (req, res) {
+        db.News.find({}).then(function (dbNews) {
+            res.render("saved", {
+                title: "Saved Articles",
+                news: dbNews
+            }).catch(function (err) {
+                res.json(err);
+            })
+        });
+    });
 
     app.get("/clear", function (req, res) {
         db.News.remove({}, function (err, res) {

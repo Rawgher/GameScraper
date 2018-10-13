@@ -22,6 +22,7 @@
   <section class="mw7 center avenir">
   <h2 class="baskerville fw1 ph3 ph0-l">News</h2>
   {{#each news}}
+  {{#unless saved }}
   
 
   <article class="bt bb b--black-10">
@@ -36,11 +37,11 @@
           <a class="db pv4 ph3 ph0-l no-underline black dim" href='{{this.link}} target="_blank"'>
           <h1 class="f3 fw1 baskerville mt0 lh-title">{{this.title}}</h1>
           </a>
-          <p class="f6 lh-copy mv0">{{this.author}}</p>
+          <p class="f6 lh-copy mv0">{{this.description}}</p>
         </div>
       </div>
   </article>
 
-
+{{/unless}}
 {{/each}}
 </section>
