@@ -52,7 +52,7 @@ module.exports = function (app) {
 
                         result.description = $(this).attr("content")
 
-                        db.News.create(result)
+                        db.News.insertMany(result)
                             .then(function (dbNews) {
                                 // View the added result in the console
                                 console.log(dbNews);
@@ -176,7 +176,7 @@ module.exports = function (app) {
                 })
             }
         });
-        // res.redirect("/read/" + req.params.id)
+
     })
 
 };
