@@ -1,3 +1,4 @@
+// On click function to help delete a comment
 $(document).ready(function(){
     $("#deleteNote").on("click", function(event) {
         console.log("happening?")

@@ -6,59 +6,57 @@
         <p class="fw1 white-70">
           Where you can get the latest news on upcoming games.
         </p>
-        <cite class="f6 ttu tracked fs-normal">Rawgher</cite>
         <br>
         <br>
         <div>
-        <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/scrape">Scrape Articles</a>
-        <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black" href="/clear">Clear Articles</a>
+          <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-green" href="/scrape">Scrape Articles</a>
+          <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-red" href="/clear">Clear Articles</a>
         </div>
       </blockquote>
 
     </div>
   </div>
+</article>
+
+<section class="mw7 center avenir">
+
+  {{#unless news}}
+  <article class="mw7 center ph3 ph5-ns tc br2 pv5 mb5">
+    <h1 class="fw6 f3 f2-ns lh-title mt0 mb3">
+      Looks like you haven't scraped the web yet.
+    </h1>
+    <h2 class="fw2 f4 lh-copy mt0 mb3">
+      Go hit the scrape button on the banner and see what comes up!
+    </h2>
   </article>
 
-  <section class="mw7 center avenir">
+  {{/unless}}
 
-        {{#unless news}}
-        <article class="mw7 center ph3 ph5-ns tc br2 pv5 mb5">
-  <h1 class="fw6 f3 f2-ns lh-title mt0 mb3">
-    Looks like you haven't scraped the web yet. 
-  </h1>
-  <h2 class="fw2 f4 lh-copy mt0 mb3">
-    Go hit the scrape button on the banner and see what comes up!
-  </h2>
-  </article>
-                {{!-- <div class="bt bb b--black-10">
-                    <p>Looks like you haven't scraped the web yet. Go hit the scrape button on the banner and see what comes up!</p>
-                </div> --}}
-        {{/unless}}
-
-{{#if news}}
+  {{#if news}}
   {{#each news}}
   {{#unless saved }}
-  
+
 
   <article class="bt bb b--black-10">
-    
-      <div class="flex flex-column flex-row-ns">
-        <div class="pr3-ns mb4 mb0-ns w-50 w-40-ns">
-          <a class="db pv4 ph3 ph0-l no-underline black dim" href="{{this.link}}" target="_blank">
+
+    <div class="flex flex-column flex-row-ns">
+      <div class="pr3-ns mb4 mb0-ns w-50 w-40-ns">
+        <a class="db pv4 ph3 ph0-l no-underline black dim" href="{{this.link}}" target="_blank">
           <img src="{{this.image}}">
-          </a>
-        </div>
-        <div class="w-100 w-60-ns pl3-ns">
-          <a class="db mv3 ph3 ph0-l no-underline black dim" href="{{this.link}}" target="_blank">
-          <h1 class="f3 fw1 baskerville mt0 lh-title">{{this.title}}</h1>
-          </a>
-          <p class="f6 lh-copy mv0 marginBot">{{this.description}}</p>
-          <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black marginBot" href="/saveIt/{{this._id}}" data-saved="{{this.saved}}">Save Article</a>
-        </div>
+        </a>
       </div>
+      <div class="w-100 w-60-ns pl3-ns">
+        <a class="db mv3 ph3 ph0-l no-underline black dim" href="{{this.link}}" target="_blank">
+          <h1 class="f3 fw1 baskerville mt0 lh-title">{{this.title}}</h1>
+        </a>
+        <p class="f6 lh-copy mv0 marginBot">{{this.description}}</p>
+        <a class="f6 link dim br3 ph3 pv2 mb2 dib white bg-near-black marginBot" href="/saveIt/{{this._id}}" data-saved="{{this.saved}}">Save
+          Article</a>
+      </div>
+    </div>
   </article>
 
-{{/unless}}
-{{/each}}
-{{/if}}
+  {{/unless}}
+  {{/each}}
+  {{/if}}
 </section>

@@ -1,5 +1,5 @@
-var axios = require("axios");
-var cheerio = require("cheerio");
+const axios = require("axios");
+const cheerio = require("cheerio");
 const db = require("../models");
 
 module.exports = function (app) {
@@ -13,78 +13,74 @@ module.exports = function (app) {
         });
     });
 
-    // A GET route for scraping the echoJS website
+    // Get route for scraping theverge.com/games
     app.get("/scrape", function (req, res) {
 
-        // First, we grab the body of the html with axios
+        // Function that initially grabs the info from the page
         axios.get("http://www.theverge.com/games").then(function (response) {
 
-            // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(response.data);
-            // Now, we grab every h2 within an article tag, and do the following:
+
             $(".c-entry-box--compact--article").each(function (i, element) {
 
                 // Save an empty result object
                 var result = {};
 
-                // Add the text and href of every link, and save them as properties of the result object
+                // Make variables for what I need to grab 
                 result.title = $(this).children("div").children("h2").children("a").text();
 
                 result.link = $(this).children("div").children("h2").children("a").attr("href");
 
+                // Regex function to get only the src from the noscript tag on the page
                 var myRegex = new RegExp('src="(.+)">', 'g');
                 var noscript_string = $(this).children("a").children("div").children("noscript").text();
 
                 result.image = myRegex.exec(noscript_string);
 
+                // Function to grab the result.image that I want from the regex string
                 if (result.image != null && result.image.length > 0) { result.image = result.image[1] }
                 else result.image = ""
 
+                // Second axios call that goes into each article to grab the meta tag holding the article description
                 axios.get(result.link).then(function (response) {
 
-                    // Then, we load that into cheerio and save it to $ for a shorthand selector
                     var $ = cheerio.load(response.data);
 
                     $("meta[name='description']").each(function (i, element) {
-                        // If we were able to successfully scrape and save an Article, send a message to the client
 
                         result.description = $(this).attr("content")
 
+                        // Inserts all results into the database. InsertMany() is used to avoid duplicate entries
                         db.News.insertMany(result)
                             .then(function (dbNews) {
+
                                 // View the added result in the console
                                 console.log(dbNews);
 
                             })
                             .catch(function (err) {
-                                // If an error occurred, send it to the client
                                 // return res.json(err);
                             });
 
-
                     })
-
 
                 })
 
-
             })
 
-
+            // Timeout to force the redirect to wait for the scrape to finish
             setTimeout(function () { res.redirect("/") }, 5000);
 
         })
 
-
     })
 
 
-    // Route for getting all Articles from the db
-    app.get("/articles", function (req, res) {
-        // Grab every document in the Articles collection
+    // Route for getting all articles from the db and return it as json
+    app.get("/news", function (req, res) {
+        // Grab every document in the news collection
         db.News.find({}).sort({ _id: -1 })
             .then(function (dbNews) {
-                // If we were able to successfully find Articles, send them back to the client
                 res.json(dbNews);
             })
             .catch(function (err) {
@@ -93,7 +89,9 @@ module.exports = function (app) {
             });
     });
 
+    // Route for grabbing a specific news article
     app.get("/read/:id", function (req, res) {
+        // Function to find the specific news article
         db.News.findOne({ _id: req.params.id }).populate("notes").then(function (dbNews) {
             res.render("read", {
                 title: "Notes",
@@ -102,12 +100,15 @@ module.exports = function (app) {
         });
     });
 
+    // Route for adding a note to a specific news article
     app.post("/read/:id", function (req, res) {
 
+        // Creating the note and adding it to the collection
         db.Notes.create(req.body, function (err, res) {
             if (err) {
                 console.log(err)
             } else {
+                // Finding the news article that the note shoudl be added to
                 db.News.findOneAndUpdate({ "_id": req.params.id }, { $push: { "notes": res._id } }, { safe: true, upsert: true, new: true })
                     .exec(function (err, doc) {
                         if (err) {
@@ -116,27 +117,29 @@ module.exports = function (app) {
                     })
             }
         })
+        // Redirecting to the article the user was commenting on
         res.redirect("/read/" + req.params.id)
     });
 
+    // Route that shows all articles that the user saved
     app.get("/saved", function (req, res) {
         db.News.find({}).then(function (dbNews) {
             res.render("saved", {
                 title: "Saved Articles",
                 news: dbNews
-            }).catch(function (err) {
-                // res.json(err);
             })
         });
     });
 
+    // Route that updates an article and setting its saved value to true
     app.get("/saveIt/:id", function (req, res) {
         db.News.updateOne({ _id: req.params.id }, { $set: { saved: true } }, function (err) {
-
         })
         res.redirect("/")
     })
 
+    // Route to empty out the whole news collection
+    // Might want to add a function to delete all notes. Should still work since the new article ID's will not match up 
     app.get("/clear", function (req, res) {
         db.News.remove({}, function (err, res) {
             if (err) {
@@ -148,6 +151,7 @@ module.exports = function (app) {
         res.redirect("/");
     })
 
+    // Route to delete an article by its id
     app.get("/delete/:id", function (req, res) {
         db.News.deleteOne({ _id: req.params.id }, function (err) {
             if (err) return handleError(err);
@@ -155,6 +159,7 @@ module.exports = function (app) {
         res.redirect("/saved")
     });
 
+    // Route to delete a specific comment from a news article
     app.delete("/read/:id/:noteid", function (req, res) {
  
         db.Notes.findByIdAndRemove(req.params.noteid, function (err, doc) {

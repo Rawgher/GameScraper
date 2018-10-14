@@ -1,20 +1,12 @@
-var express = require("express");
-var mongoose = require("mongoose");
-var exphbs = require("express-handlebars");
-
-// Our scraping tools
-// Axios is a promised-based http library, similar to jQuery's Ajax method
-// It works on the client and on the server
+const express = require("express");
+const mongoose = require("mongoose");
+const exphbs = require("express-handlebars");
 
 
-// Require all models
-
-var PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
 // Initialize Express
 var app = express();
-
-// Configure middleware
 
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
