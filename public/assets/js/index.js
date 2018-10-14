@@ -1,7 +1,6 @@
 $(document).ready(function(){
-    console.log("am i happening first?")
     $("#deleteNote").on("click", function(event) {
-        console.log("am i happening?")
+        console.log("happening?")
         event.preventDefault();
         let link = location.href + "/" + $(this).data("notes");
         $.ajax({

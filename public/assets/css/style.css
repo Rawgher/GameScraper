@@ -1,12 +1,16 @@
 .fixedHead {
-    position: fixed;
+    /* position: fixed; */
     top: 0px;
     left: 0px;
     right: 0px
 }
 
+.background {
+    background-image: url("/assets/images/playstation-pattern.PNG");
+}
+
 .fixedFoot {
-    position: sticky;
+    /* position: sticky; */
     bottom: 0px;
     left: 0px;
     right: 0px

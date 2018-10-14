@@ -125,7 +125,7 @@ module.exports = function (app) {
                 title: "Saved Articles",
                 news: dbNews
             }).catch(function (err) {
-                res.json(err);
+                // res.json(err);
             })
         });
     });
