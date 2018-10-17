@@ -123,10 +123,12 @@ module.exports = function (app) {
 
     // Route that shows all articles that the user saved
     app.get("/saved", function (req, res) {
-        db.News.find({}).then(function (dbNews) {
+        db.News.find({ saved :true }).then(function (dbNews) {
             res.render("saved", {
                 title: "Saved Articles",
-                news: dbNews
+                news: dbNews,
+                // Conditional (ternary) Operator Jose helped me with
+                saved: dbNews.length > 0 ? true : false
             })
         });
     });
