@@ -71,6 +71,10 @@ module.exports = function (app) {
             // Timeout to force the redirect to wait for the scrape to finish
             setTimeout(function () { res.redirect("/") }, 5000);
 
+
+            // move the database call around here
+            // somehow push the results from both calls above to be called by the database call
+            // bingo bango bongo it works
         })
 
     })
